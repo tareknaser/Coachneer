@@ -1,4 +1,4 @@
-# Fitness Guru: AI Personal Trainer at Home
+# Coachneer: AI Personal Trainer at Home
 
 To run the model run ...
 
