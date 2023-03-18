@@ -3,3 +3,4 @@
 app/__pycache__/
 app/utils/pose_utils/__pycache__/
 classification/.ipynb_checkpoints/
+room-for-improvement/

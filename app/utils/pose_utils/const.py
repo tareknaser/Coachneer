@@ -1,7 +1,13 @@
-VISIBILITY_THRESHOLD = 0.5
-PRESENCE_THRESHOLD = 0.5
+import mediapipe as mp
 
-POSE = {
+mp_pose = mp.solutions.pose
+lmPose = mp_pose.PoseLandmark
+
+# Thresholds
+VISIBILITY_THRESHOLD = 0.5
+
+# Pose mappings
+POSE_CONNECTIONS = {
   "nose": 0,
   "left_eye_inner": 1,
   "left_eye": 2,
@@ -35,4 +41,40 @@ POSE = {
   "right_heel": 30,
   "left_foot_index": 31,
   "right_foot_index": 32,
+}
+
+NORM_POSE_CONNECTIONS = {
+  "nose": lmPose.NOSE,
+  "left_eye_inner": lmPose.LEFT_EYE_INNER,
+  "left_eye": lmPose.LEFT_EYE,
+  "left_eye_outer": lmPose.LEFT_EYE_OUTER,
+  "right_eye_inner": lmPose.RIGHT_EYE_INNER,
+  "right_eye": lmPose.RIGHT_EYE,
+  "right_eye_outer": lmPose.RIGHT_EYE_OUTER,
+  "left_ear": lmPose.LEFT_EAR,
+  "right_ear": lmPose.RIGHT_EAR,
+  "mouth_left": lmPose.MOUTH_LEFT,
+  "mouth_right": lmPose.MOUTH_RIGHT,
+  "left_shoulder": lmPose.LEFT_SHOULDER,
+  "right_shoulder": lmPose.RIGHT_SHOULDER,
+  "left_elbow": lmPose.LEFT_ELBOW,
+  "right_elbow": lmPose.RIGHT_ELBOW,
+  "left_wrist": lmPose.LEFT_WRIST,
+  "right_wrist": lmPose.RIGHT_WRIST,
+  "left_pinky": lmPose.LEFT_PINKY,
+  "right_pinky": lmPose.RIGHT_PINKY,
+  "left_index": lmPose.LEFT_INDEX,
+  "right_index": lmPose.RIGHT_INDEX,
+  "left_thumb": lmPose.LEFT_THUMB,
+  "right_thumb": lmPose.RIGHT_THUMB,
+  "left_hip": lmPose.LEFT_HIP,
+  "right_hip": lmPose.RIGHT_HIP,
+  "left_knee": lmPose.LEFT_KNEE,
+  "right_knee": lmPose.RIGHT_KNEE,
+  "left_ankle": lmPose.LEFT_ANKLE,
+  "right_ankle": lmPose.RIGHT_ANKLE,
+  "left_heel": lmPose.LEFT_HEEL,
+  "right_heel": lmPose.RIGHT_HEEL,
+  "left_foot_index": lmPose.LEFT_FOOT_INDEX,
+  "right_foot_index": lmPose.RIGHT_FOOT_INDEX,
 }
