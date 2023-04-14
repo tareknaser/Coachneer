@@ -1,75 +1,87 @@
 import cv2
+import mediapipe as mp
 
-class VideoReader:
-  """ Helper class for video utilities """
-  def __init__(self, filename):
-    self.cap = cv2.VideoCapture(filename)
-    self._total_frames = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    self._current_frame = 0
 
-  def read_frame(self):
-    """ Read a frame """
-    if self.cap.isOpened():
-      ret, frame = self.cap.read()
+mp_pose = mp.solutions.pose
+pose = mp_pose.Pose(min_detection_confidence= 0.5, min_tracking_confidence= 0.5)
 
-      if ret is False or frame is None:
-        return None
-      
-      # frame = cv2.resize(frame, (480, 960))
-      self._current_frame += 1
-    else:
-      return None
 
-    return frame
+class VideoReaderUtils:
+    """Helper class for video utilities"""
+    def __init__(self, filename):
+        self.cap = cv2.VideoCapture(filename)
+        self.total_frames = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.current_frame = 0
 
-  def read_n_frames(self, num_frames= 1):
-    """ Read n frames """
-    frames_list = []
-    
-    for _ in range(num_frames):
-      if self.cap.isOpened():
-        ret, frame = self.cap.read()
+    def process_frame(self, frame):
+        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        image.flags.writeable = False
         
-        if ret is False or frame is None:
-          return None
+        results = pose.process(image)
+        
+        image.flags.writeable = True
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        
+        return image, results
+    
+    def read_frame(self):
+        """Read a frame"""
+        if self.cap.isOpened():
+            ret, frame = self.cap.read()
+            if not ret or (frame is None):
+                print( f"Ignoring Empty Frame.. {ret}" )
+                return 
+            self.current_frame += 1
+        else:
+            return "Error File Not Found"
+        return frame
 
-        frames_list.append(frame)
-        self._current_frame += 1
-      else:
-        return None
+    def read_n_frames(self, num_frames=1):
+        """Read n frames"""
+        frames_list = []
+        for _ in range(num_frames):
+            if self.cap.isOpened():
+                ret, frame = self.cap.read()
+                if not ret or (frame is None):
+                    return f"Ignoring Empty Frame.\nSUCCESS: {ret}"
+                frames_list.append(frame)
+                self.current_frame += 1
+            else:
+                return "Error File Not Found"
+        return frames_list
 
-    return frames_list
+    def is_opened(self):
+        """Check if video capture is opened"""
+        return self.cap.isOpened()
 
-  def is_opened(self):
-    """ Check is video capture is opened """
-    return self.cap.isOpened()
+    def get_frame_width(self):
+        """Get width of a frame"""
+        return self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 
-  def get_frame_width(self):
-    """ Get width of a frame """
-    return self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-    # return 480
+    def get_frame_height(self):
+        """Get height of a frame"""
+        return self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
-  def get_frame_height(self):
-    """ Get height of a frame """
-    return self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    # return 960
+    def get_frame_size(self):
+        """Get size of a frame"""
+        return self.get_frame_width(), self.get_frame_height()
+    
+    def get_video_fps(self):
+        """Get frames per second of video"""
+        return self.cap.get(cv2.CAP_PROP_FPS)
 
-  def get_video_fps(self):
-    """ Get Frames per second of video """
-    return self.cap.get(cv2.CAP_PROP_FPS)
+    def get_current_frame(self):
+        """Get current frame of video being read"""
+        return self.current_frame
 
-  def get_current_frame(self):
-    """ Get current frame of video being read """
-    return self._current_frame
+    def get_total_frames(self):
+        """Get total frames of a video"""
+        return self.total_frames
 
-  def get_total_frames(self):
-    """ Get total frames of a video """
-    return self._total_frames
+    def release(self):
+        """Release video capture"""
+        self.cap.release()
+        cv2.destroyAllWindows()
 
-  # def release(self):
-  #   """ Release video capture """
-  #   self.cap.release()
-  #   cv2.destroyAllWindows()
-
-  # def __del__(self):
-  #   self.release()
+    def __del__(self):
+        self.release()

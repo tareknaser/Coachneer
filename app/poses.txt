@@ -1,7 +1,14 @@
+Bicep Curls -> Done
+Squat -> Processing
+
+Deadlifts
 Push Up
 Pull Up
-Squat
 Plank
 Jumping Jack
-Bicep Curls
 Abdominal
+
+
+py classify.py -v '.\data\videos_in\squats\squat-1.mp4' -e squat -f 'squat1-'
+py classify.py -v '.\data\videos_in\planks\plank-down1.mp4' -e plank -f 'plank-down-'
+py classify.py -v '.\data\videos_in\biceps\bicep-curl.mp4' -f 'bicepscurl-'
