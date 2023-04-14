@@ -19,7 +19,7 @@ def main():
                         default="bicep_curl",
                         help="Type of exercise in video source",
                         type=str, 
-                        choices=['bicep_curl', 'squat'])
+                        choices=['bicep_curl', 'squat', 'plank', 'abdominal'])
 
     parser.add_argument("-f", "--filename", 
                         required=False,

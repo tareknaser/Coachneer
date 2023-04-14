@@ -5,7 +5,7 @@ class OperationUtils:
   def __init__(self):
     pass
 
-  def find_angle(self, a, b, c):
+  def find_angle(self, a, b, c, angle_360= False):
     """ Calculate angle between two lines """
     if any(point == (0, 0) for point in [a, b, c]):
         return 0
@@ -16,8 +16,9 @@ class OperationUtils:
 
     radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
     angle = np.abs(radians * 180.0 / np.pi)
-  
-    if angle > 180.0:
+
+    if not angle_360:
+      if angle > 180.0:
         angle = 360 - angle
   
     return angle

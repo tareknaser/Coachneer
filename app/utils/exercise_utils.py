@@ -1,6 +1,6 @@
 import sys
 
-from utils.pose_utils.pose import Pose, BicepCurl, Squat
+from utils.pose_utils.pose import Pose, BicepCurl, Squat, Plank, Abdominal
 from utils.video_reader_utils import VideoReaderUtils
 
 
